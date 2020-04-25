@@ -1,3 +1,5 @@
+//can be modified to use StringBuilder() to spped up the string manipulations as it is a mutable class and string is immutable
+//sb.setLength(chosen.length()-1); is used to get substring upto the chosen index 
 class Solution {
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList();
@@ -22,18 +24,17 @@ class Solution {
     }
     private void letterCombinationsHelper(String digits,String[] phoneDigits,List<String> result,String inProgress,int index){
         //base condition
-        if(inProgress.length()==digits.length()){
+        if(index==digits.length()){
             result.add(inProgress);
             return;
-        }
-        
-        int len = inProgress.length();
-        int phoneDigitsIndex = digits.charAt(len-1) - '0';
-        String letters = phoneDigits[phoneDigitsIndex];
-        for(int i=index;i<letters.length();i++){
-            inProgress += letters.charAt(i); //choose
-            letterCombinationsHelper(digits,phoneDigits,result,inProgress,index+1);  //explore
-            inProgress.substring(0,len); //unchoose
+        } else{
+            int phoneDigitsIndex = digits.charAt(index) - '0';
+            String letters = phoneDigits[phoneDigitsIndex];
+            for(int i=0;i<letters.length();i++){
+                inProgress += letters.charAt(i); //choose
+                letterCombinationsHelper(digits,phoneDigits,result,inProgress,index+1);  //explore
+                inProgress = inProgress.substring(0,index); //unchoose
+            }      
         }
         
     }
